@@ -19,15 +19,10 @@ class ShortestPathSolver:
     def find_shortest_path(self):
         print("Starting vertex: {}".format(self.start))
         print("Ending vertex: {}".format(self.goal))
-
         
         ''' 
-            Structure of Node: (idOfNode, costFromStart, idOfParent)
+            Structure of Node: (idOfNode, idOfParent)
         '''
-
-        # print("DEBUG: curNode = {} and grab_edges(curNode) = {}".format(curNode, self.grab_edges(curNode)))
-
-
 
         self.nodes = self.build_vertices_list()
         self.heap = []       # list of nodes (where node is a tuple in the following format: (id, idOfParent)
@@ -45,16 +40,12 @@ class ShortestPathSolver:
             curNode = self.heap.pop()
             closedDict[curNode[0]] = curNode    # Insert current node to the closedDict
 
-            print("\tDEBUG: curNode = {}".format(curNode))
-
             if self.goal == curNode[0]:
                 goalNode = curNode
 
             for edge in self.grab_edges(curNode):
                 adjNodeId = edge[1]
                 newCost = distances[curNode[0]] + edge[2]
-
-                print("\t\tDEBUG: curNode's children = {}".format(adjNodeId))
 
                 if (adjNodeId not in closedDict) or (newCost < distances[adjNodeId]):
                     distances[adjNodeId] = newCost
@@ -63,17 +54,12 @@ class ShortestPathSolver:
                     # Update value if it already does
                     adjNode = (adjNodeId, curNode[0])
                     self.decrease_priority(adjNode)
-                        
 
-            print("\t\tDEBUG: curNode = {} and self.heap contents = {}".format(curNode, [ (x, distances[x[0]]) for x in self.heap ]))
-            print("\t\t\tDEBUG: closedDict = {}".format(closedDict))
         ###end-while
-
             
         self.build_shortest_path(goalNode, closedDict)
         
     ###end-find_shortest_path
-
 
 
     def decrease_priority(self, node):
@@ -94,7 +80,6 @@ class ShortestPathSolver:
             self.heap.append(node)
     ###end-decrease_priority
 
-
     def build_shortest_path(self, goalNode, closedDict):
         '''
             This method backtracks from the goal node to the root node by
@@ -102,32 +87,20 @@ class ShortestPathSolver:
             populates the data member self.shortestPath
         '''
         solution = []
-    
         curNode = goalNode
-
-
-        print("\n\nStarting build_shortest_path")
-
 
         # Iterate over closedDict following each node's parent and populate the solution list until the root is reached
         while True:
-
-
-            print("\t\tDEBUG: curNode = {} and solution = {}".format(curNode, solution))
-
-
             parentId = curNode[1]
 
             # Root reached
             if parentId == -999:
-                print("Breaking inside parent checker")
                 break
 
             for edge in self.table:
                 if edge[0] == parentId and edge[1] == curNode[0]:
                     solution.append(edge)
                     break
-
             try:
                 curNode = [closedDict[x] for x in closedDict if closedDict[x][0] == parentId][0]
             except:
@@ -163,10 +136,8 @@ class ShortestPathSolver:
         return [edge for edge in self.table if edge[0] == node[0]]
     ###end-grab_edges
 
-
-            
-
     def print_shortest_path(self):
+        print("The shortest path is:\n")
         for edge in reversed(self.shortestPath):
             print("Vertex {} to vertex {} (edge weight of {})".format(edge[0], edge[1], edge[2]))
     ###end-print-path
