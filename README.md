@@ -5,7 +5,7 @@ Lazy implementation of dijkstra using python3
 Each line contains 3 integers separated by a space (sourceNodeId destinationNodeId edgeWeight)
 The very last line represents the start node and the goal node, to calculate the shortest path
 
-## Example:
+## Sample Input:
 ```
 13 1 12
 8 13 13
@@ -18,4 +18,16 @@ The very last line represents the start node and the goal node, to calculate the
 13 2 5
 13 5 4
 2 8 
+```
+
+
+## Sample Output:
+```
+Starting vertex: 2
+Ending vertex: 8
+The shortest path is:
+
+Vertex 2 to vertex 13 (edge weight of 3)
+Vertex 13 to vertex 5 (edge weight of 4)
+Vertex 5 to vertex 8 (edge weight of 5)
 ```
