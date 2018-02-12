@@ -2,8 +2,6 @@
 # Dijkstra Solver
 # 02/11/2018
 
-import time
-import heapq
 import math
 
 class ShortestPathSolver:
