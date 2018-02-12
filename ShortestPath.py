@@ -1,4 +1,4 @@
-# Author: Uda Yeruultsengel
+# Author: Oyun-Undrakh Yeruultsengel
 # Dijkstra Solver
 # 02/11/2018
 
@@ -87,32 +87,38 @@ class ShortestPathSolver:
         solution = []
         curNode = goalNode
 
-        # Iterate over closedDict following each node's parent and populate the solution list until the root is reached
-        while True:
-            parentId = curNode[1]
+        try:
+            # Iterate over closedDict following each node's parent and populate the solution list until the root is reached
+            while True:
+                parentId = curNode[1]
 
-            # Root reached
-            if parentId == -999:
-                break
-
-            for edge in self.table:
-                if edge[0] == parentId and edge[1] == curNode[0]:
-                    solution.append(edge)
+                # Root reached
+                if parentId == -999:
                     break
-            try:
-                curNode = [closedDict[x] for x in closedDict if closedDict[x][0] == parentId][0]
-            except:
-                print("ERROR(1): curNode not found in closedDict ")
-                print(solution)
-                solution = None
-                break
-        ###end-while
-            
-        if solution:
-            self.shortestPath = solution
-        else:
+
+                for edge in self.table:
+                    if edge[0] == parentId and edge[1] == curNode[0]:
+                        solution.append(edge)
+                        break
+                try:
+                    curNode = [closedDict[x] for x in closedDict if closedDict[x][0] == parentId][0]
+                except:
+                    print("ERROR(1): curNode not found in closedDict ")
+                    print(solution)
+                    solution = None
+                    break
+            ###end-while
+                
+            if solution:
+                self.shortestPath = solution
+            else:
+                self.shortestPath = []
+                print("\nPath doesn't exist between {} and {}.".format(self.start, self.goal))
+                # print("ERROR(2): Cannot find shortest path between {} and {}".format(self.start, self.goal))
+        except:
             self.shortestPath = []
-            print("ERROR(2): function build_shortest_path failed")
+            print("\nPath doesn't exist between {} and {}.".format(self.start, self.goal))
+            # print("ERROR(2): Cannot find shortest path between {} and {}".format(self.start, self.goal))
 
     ###end-build_shortest_path
 
@@ -135,9 +141,10 @@ class ShortestPathSolver:
     ###end-grab_edges
 
     def print_shortest_path(self):
-        print("The shortest path is:\n")
-        for edge in reversed(self.shortestPath):
-            print("Vertex {} to vertex {} (edge weight of {})".format(edge[0], edge[1], edge[2]))
+        if self.shortestPath:
+            print("The shortest path is:\n")
+            for edge in reversed(self.shortestPath):
+                print("Vertex {} to vertex {} (edge weight of {})".format(edge[0], edge[1], edge[2]))
     ###end-print-path
 ###end-class
 
